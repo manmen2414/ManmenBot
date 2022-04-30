@@ -15,7 +15,9 @@ namespace Settng
         //token入れてください(ここも環境変数使ってるので上と同じようにしてtokenを入れてください)
         public static readonly ulong notificationChannel = 947034727452389397;
         public static readonly bool notificationcheck = false;
-        //上側:番号を通知したおチャンネルIDにする事で起動終了通知のチャンネルが設定できる
+        //上側:947034727452389397の()にチャンネルID入れる事で起動終了通知のチャンネルが設定できる
         //下側:trueをfalseにすれば通知しなくなる
+        public static readonly string[] notificationmessage = { $"`スタート:まんめんbot({DateTime.Now})`", $"`終了:まんめんbot({DateTime.Now})`" };
+        //スタート時と終了時のメッセージをいじれる。
     }   
 }
