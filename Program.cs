@@ -1,12 +1,12 @@
-﻿using Discord;
+using Discord;
 using Discord.WebSocket;
+using Microsoft.Win32;
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.Win32;
 
 
 public enum blocks
@@ -114,21 +114,22 @@ namespace Main
 
         private Task LogAsync(LogMessage log)
         {
-            writeline($"{DateTime.Now.ToString("yyyy/MM/dd ")}{log.ToString()}");
+            writeline($"{DateTime.Now:yyyy/MM/dd}{log}");
             return Task.CompletedTask;
         }
 
         public async Task onReady()
         {
             Console.WriteLine($"[{_client.CurrentUser.Username}]botは接続されました");
-            if (Settng.Settngs.notificationChannel == null)
+            SocketTextChannel nc = _client.GetChannel(Settng.Settngs.notificationChannel) as SocketTextChannel;
+            if (nc == null)
             {
                 Console.WriteLine("エラー:notificationChannelがnullです(入力値が間違っている可能性があります)");
             }
             else
             {
                 if (Settng.Settngs.notificationcheck)
-                    await Settng.Settngs.notificationChannel.SendMessageAsync("`スタート:まんめんbot(" + DateTime.Now.ToString() + ")`");//各自で変更してください
+                    await nc.SendMessageAsync("`スタート:まんめんbot(" + DateTime.Now.ToString() + ")`");//各自で変更してください
             }
         }
 
@@ -137,12 +138,12 @@ namespace Main
             SocketGuild scktgid = null;
             if (IsDMmessage(message))
             {
-                writeline($"{DateTime.Now.ToString()} {message.Author.Username}({message.Channel.ToString()})|=|{message.ToString()}({message.Author.Id})");
+                writeline($"{DateTime.Now} {message.Author.Username}({message.Channel.ToString()})|=|{message.ToString()}({message.Author.Id})");
             }
             else
             {
                 scktgid = (message.Channel as SocketGuildChannel).Guild;
-                writeline($"{DateTime.Now.ToString()} {message.Author.Username}({scktgid.Name})|=|{message.ToString()}({message.Author.Id})");
+                writeline($"{DateTime.Now} {message.Author.Username}({scktgid.Name})|=|{message}({message.Author.Id})");
             }
 
             if (message.Author.Id == _client.CurrentUser.Id || message.Author.Id == ulgkakko[0] || message.Author.Id == ulgkakko[1] || message.Author.Id == ulgkakko[2])
@@ -214,7 +215,6 @@ namespace Main
                 {
                     string[] del = { "m?ランダム " };
                     string[] arr = message.ToString().Split(del, StringSplitOptions.None);
-                    Console.WriteLine(arr[1]);
                     double med = double.Parse(arr[1]);
                     if (med < 100)
                     {
@@ -351,9 +351,11 @@ namespace Main
                 }
                 if (message.Content == "m?終了")
                 {
-                    if (message.Author == Settng.Settngs.hostuser)
+                    if (message.Author.Id == Settng.Settngs.hostuser)
                     {
-                        await Settng.Settngs.notificationChannel.SendMessageAsync($"`終了:まんめんbot({DateTime.Now.ToString()})`");
+                        SocketTextChannel nc = _client.GetChannel(Settng.Settngs.notificationChannel) as SocketTextChannel;
+                        await nc.SendMessageAsync($"`終了:まんめんbot({DateTime.Now.ToString()})`");
+                        await _client.StopAsync().ConfigureAwait(false);
                         Environment.Exit(0);
 
                     }
