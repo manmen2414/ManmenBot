@@ -129,7 +129,7 @@ namespace Main
             else
             {
                 if (Settng.Settngs.notificationcheck)
-                    await nc.SendMessageAsync("`スタート:まんめんbot(" + DateTime.Now.ToString() + ")`");//各自で変更してください
+                    await nc.SendMessageAsync(Settng.Settngs.notificationmessage[0]);
             }
         }
 
@@ -354,14 +354,14 @@ namespace Main
                     if (message.Author.Id == Settng.Settngs.hostuser)
                     {
                         SocketTextChannel nc = _client.GetChannel(Settng.Settngs.notificationChannel) as SocketTextChannel;
-                        await nc.SendMessageAsync($"`終了:まんめんbot({DateTime.Now.ToString()})`");
+                        await nc.SendMessageAsync(Settng.Settngs.notificationmessage[1]);
                         await _client.StopAsync().ConfigureAwait(false);
                         Environment.Exit(0);
 
                     }
                     else
                     {
-                        await message.Channel.SendMessageAsync("まんめん以外は終了できません。");
+                        await message.Channel.SendMessageAsync($"{_client.GetUser(Settng.Settngs.hostuser).Username}以外は終了できません。");
                     }
                 }
                 if (message.ToString().StartsWith("m?VCM") && bol[7])//いらない子と化してるVCM
