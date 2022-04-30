@@ -320,11 +320,6 @@ namespace Main
                     }
 
                 }
-                if (message.Content == "m?debug:num1")
-                {
-                    var insuu = _client.GetChannel(947034727452389397) as SocketTextChannel;
-                    Console.WriteLine(insuu.ToString());
-                }
                 if (message.ToString().StartsWith("+"))
                 {
                     string[] del = { "+" };
