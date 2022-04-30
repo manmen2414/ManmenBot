@@ -3,6 +3,7 @@
 
 ## このbotについて
 まんめん#2414がDiscord.Netを勉強して作ったbotです。
+招待アド: https://discord.com/api/oauth2/authorize?client_id=917367095610728469&permissions=2048&scope=bot
 
 ## コマンド
 
